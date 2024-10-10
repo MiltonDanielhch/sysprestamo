@@ -13,9 +13,9 @@
     {{ __('adminlte::adminlte.verify_check_your_email') }}
     {{ __('adminlte::adminlte.verify_if_not_recieved') }},
 
-    <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+    <form class="d-inline" method="POST" action="{{ route('verification.send') }}">
         @csrf
-        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
+        <button type="submit" class="btn btn-success mt-4">
             {{ __('adminlte::adminlte.verify_request_another') }}
         </button>.
     </form>
