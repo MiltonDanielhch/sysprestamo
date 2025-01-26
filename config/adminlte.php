@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'SysCita',
+    'title' => 'SysPrestamo',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Sistema </b>Cita Medica',
+    'logo' => '<b>Sistema </b>Prestamo',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -295,97 +295,37 @@ return [
 
     'menu' => [
         // Navbar items:
-        [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
-        ],
-        [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
 
-        // Sidebar items:
+        ['header' => 'labels'],
         [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'Configuración',
+            'url' => 'admin/configuracion',
+            'icon' => 'fas fa-fw fa-cogs',
+            'classes' => 'bg-blue text-white',
         ],
         [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        ],
-        [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text' => 'multilevel',
-            'icon' => 'fas fa-fw fa-share',
+            'text' => 'Roles',
+            'icon' => 'fas fa-fw fa-user-check',
+            'classes' => 'bg-blue text-white',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url' => '#',
-                ],
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                        ],
-                        [
-                            'text' => 'level_two',
-                            'url' => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url' => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url' => '#',
+                    'text' => 'Listado de Roles',
+                    'url' => 'admin/roles',
+                    'classes' => 'bg-white text-b{ack',
                 ],
             ],
         ],
-        ['header' => 'labels'],
         [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
+            'text' => 'Usuarios',
+            'icon' => 'fas fa-fw fa-users',
+            'classes' => 'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de Usuarios',
+                    'url' => 'admin/usuarios',
+                    'classes' => 'bg-white text-b{ack',
+                ],
+            ],
         ],
     ],
 
@@ -422,28 +362,64 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Plugins-Configuration
     |
     */
-
     'plugins' => [
         'Datatables' => [
-            'active' => false,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                'active' => true,
+                'files' => [
+                    [
+                        'type' => 'js',
+                        'asset' => false,
+                        'location' => '//cdn.datatables.net/2.2.1/js/dataTables.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => false,
+                        'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    ],
+                    [
+                        'type' => 'css',
+                        'asset' => false,
+                        'location' => '//cdn.datatables.net/2.2.1/css/dataTables.dataTables.min.css',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => false,
+                        'location' => 'https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.min.js',
+
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => false,
+                        'location' => 'https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => false,
+                        'location' => 'https://cdn.datatables.net/buttons/3.2.0/js/buttons.colVis.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => false,
+                        'location' => 'https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => false,
+                        'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => false,
+                        'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/pdfmake.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => false,
+                        'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/vfs_fonts.js',
+                    ],
                 ],
             ],
-        ],
+
         'Select2' => [
             'active' => false,
             'files' => [
@@ -469,16 +445,22 @@ return [
                 ],
             ],
         ],
-        'Sweetalert2' => [
-            'active' => false,
+       'Sweetalert2' => [
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.15.10/sweetalert2.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.15.10/sweetalert2.min.css',
                 ],
             ],
         ],
+
         'Pace' => [
             'active' => false,
             'files' => [
