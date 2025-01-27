@@ -30,6 +30,14 @@ $cards = [
         'count' => $total_usuarios,
         'label' => 'Usuarios',
         'color' => 'bg-warning'
+    ],
+    [
+        'url' => '/admin/clientes',
+        'icon' => 'fa-users',
+        'title' => 'Clientes Registrados',
+        'count' => $total_clientes,
+        'label' => 'Clientes',
+        'color' => 'bg-warning'
     ]
 ];
 @endphp

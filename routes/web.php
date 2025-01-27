@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
@@ -45,6 +46,16 @@ Route::middleware('auth')->group(function () {
         'edit' => 'admin.usuarios.edit',
         'update' => 'admin.usuarios.update',
         'destroy' => 'admin.usuarios.destroy'
+    ]);
+      // Rutas para clientes (descomentadas cuando se necesiten)
+      Route::resource('admin/clientes', ClienteController::class)->names([
+        'index' => 'admin.clientes.index',
+        'create' => 'admin.clientes.create',
+        'store' => 'admin.clientes.store',
+        'show' => 'admin.clientes.show',
+        'edit' => 'admin.clientes.edit',
+        'update' => 'admin.clientes.update',
+        'destroy' => 'admin.clientes.destroy'
     ]);
 });
 

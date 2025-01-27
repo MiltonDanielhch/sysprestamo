@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use App\Models\Configuracion;
 use App\Models\Role;
 use App\Models\User;
@@ -14,7 +15,8 @@ class AdminController extends Controller
         return view('admin.index', [
             'total_configuraciones' => Configuracion::count(),
             'total_roles' => Role::count(),
-            'total_usuarios' => User::count()
+            'total_usuarios' => User::count(),
+            'total_clientes' => Cliente::count()
         ]);
     }
 }
