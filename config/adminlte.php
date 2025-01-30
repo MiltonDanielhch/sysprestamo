@@ -339,6 +339,18 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Prestamos',
+            'icon' => 'fas fa-fw fa-hand-holding-usd',
+            'classes' => 'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de Prestamos',
+                    'url' => 'admin/prestamos',
+                    'classes' => 'bg-white text-back',
+                ],
+            ],
+        ],
     ],
 
     /*
@@ -433,7 +445,7 @@ return [
             ],
 
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

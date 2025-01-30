@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
@@ -57,6 +58,19 @@ Route::middleware('auth')->group(function () {
         'update' => 'admin.clientes.update',
         'destroy' => 'admin.clientes.destroy'
     ]);
+    // Rutas para clientes (descomentadas cuando se necesiten)
+    Route::resource('admin/prestamos', PrestamoController::class)->names([
+        'index' => 'admin.prestamos.index',
+        'create' => 'admin.prestamos.create',
+        'store' => 'admin.prestamos.store',
+        'show' => 'admin.prestamos.show',
+        'edit' => 'admin.prestamos.edit',
+        'update' => 'admin.prestamos.update',
+        'destroy' => 'admin.prestamos.destroy'
+    ]);
+    Route::get('/admin/prestamos/cliente/{id}', [PrestamoController::class, 'obtenerCliente'])->name('admin.prestamos.cliente.obtenerCliente');
+    Route::get('/admin/prestamos/contratos/{id}', [PrestamoController::class, 'contratos'])->name('admin.prestamos.contratos');
+
 });
 
 // Rutas autenticadas con Jetstream y Sanctum
