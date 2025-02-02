@@ -351,6 +351,18 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Pagos',
+            'icon' => 'fas fa-fw fa-hand-holding-usd',
+            'classes' => 'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de Pagos',
+                    'url' => 'admin/pagos',
+                    'classes' => 'bg-white text-back',
+                ],
+            ],
+        ],
     ],
 
     /*

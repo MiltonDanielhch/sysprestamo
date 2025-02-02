@@ -46,6 +46,7 @@ class PrestamoController extends Controller
         return response()->json($cliente);
     }
 
+
     /**
      * Store a newly created resource in storage.
      */

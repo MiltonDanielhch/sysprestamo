@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
@@ -70,6 +71,58 @@ Route::middleware('auth')->group(function () {
     ]);
     Route::get('/admin/prestamos/cliente/{id}', [PrestamoController::class, 'obtenerCliente'])->name('admin.prestamos.cliente.obtenerCliente');
     Route::get('/admin/prestamos/contratos/{id}', [PrestamoController::class, 'contratos'])->name('admin.prestamos.contratos');
+
+    // Rutas para clientes (descomentadas cuando se necesiten)
+    // Route::resource('admin/pagos', PagoController::class)->names([
+    //     'index' => 'admin.pagos.index',
+    //     'create' => 'admin.pagos.create',
+    //     // 'store' => 'admin.pagos.store',
+    //     'show' => 'admin.pagos.show',
+    //     'edit' => 'admin.pagos.edit',
+    //     'update' => 'admin.pagos.update',
+    //     'destroy' => 'admin.pagos.destroy'
+    // ]);
+
+    // Route::get('/admin/pagos', [PagoController::class, 'index'])->name('admin.pagos.index'); // Para ver todos los pagos
+    // Route::get('/admin/pagos/prestamos/cliente/{id}', [PagoController::class, 'cargarPrestamosCliente'])->name('admin.pagos.CargarPrestamosCliente');
+
+    // // Mostrar formulario para crear un pago (si necesitas un ID específico, como cliente o préstamo)
+    // Route::get('/admin/pagos/create/{id}', [PagoController::class, 'create'])->name('admin.pagos.create');
+
+    // // Almacenar un nuevo pago
+    // Route::post('/admin/pagos', [PagoController::class, 'store'])->name('admin.pagos.store');
+
+    // // Mostrar detalles del pago
+    // Route::get('/admin/pagos/{id}', [PagoController::class, 'show'])->name('admin.pagos.show');
+
+    // // Editar un pago específico (la ruta PUT actualiza)
+    // Route::get('/admin/pagos/{id}/edit', [PagoController::class, 'edit'])->name('admin.pagos.edit');
+    // Route::put('/admin/pagos/{id}', [PagoController::class, 'update'])->name('admin.pagos.update');
+
+    // // Eliminar un pago
+    // Route::delete('/admin/pagos/{id}', [PagoController::class, 'destroy'])->name('admin.pagos.destroy');
+
+
+    Route::get('/admin/pagos', [PagoController::class, 'index'])->name('admin.pagos.index');
+    Route::get('/admin/pagos/prestamos/cliente/{id}', [PagoController::class, 'cargarPrestamosCliente'])->name('admin.pagos.CargarPrestamosCliente');
+    Route::get('/admin/pagos/prestamos/create/{id}', [PagoController::class, 'create'])->name('admin.pagos.create');
+
+    Route::post('/admin/pagos/create/{id}', [PagoController::class, 'store'])->name('admin.pagos.store');
+
+    Route::get('/admin/pagos/create', [PagoController::class, 'create'])->name('admin.pagos.create');
+    Route::get('/admin/pagos/create/{id}', [PagoController::class, 'cargarDatos'])->name('admin.pagos.cargarDatos');
+    Route::post('/admin/pagos', [PagoController::class, 'store'])->name('admin.pagos.store');
+
+    Route::get('/admin/pagos/{id}', [PagoController::class, 'show'])->name('admin.pagos.show');
+    Route::get('/admin/prestamos/contratos/{id}', [PrestamoController::class, 'contratos'])->name('admin.prestamos.contratos');
+    Route::get('/admin/pagos/{id}/edit', [PagoController::class, 'edit'])->name('admin.pagos.edit');
+
+    Route::put('/admin/pagos/{id}', [PagoController::class, 'update'])->name('admin.pagos.update');
+
+    Route::delete('/admin/pagos/{id}', [PagoController::class, 'destroy'])->name('admin.pagos.destroy');
+
+
+    Route::get('/admin/pagos/cliente/{id}', [PagoController::class, 'obtenerCliente'])->name('admin.pagos.cliente.obtenerCliente');
 
 });
 

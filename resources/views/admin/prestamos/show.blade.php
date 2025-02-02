@@ -22,10 +22,18 @@
                             <b>Nombre y Apellido</b> <br>
                             <i class="fas fa-user"></i>{{ $prestamo->cliente->apellido." ".$prestamo->cliente->nombres }} <br> <br>
                             <b>Fecha de Nacimiento</b> <br>
-                            <i class="fas fa-calendar"></i>{{ $prestamo->cliente->fecha_nacimiento   }} <br> <br>
+                            <i class="fas fa-calendar"></i>{{ $prestamo->cliente->fecha_nacimiento  }} <br> <br>
                             <b>Genero</b> <br>
                             <i class="fas fa-user-check"></i>{{ $prestamo->cliente->genero }} <br> <br>
                         </p>
+                    </div>
+                    <div class="col-md-6">
+                        <b>Email</b> <br>
+                        <i class="fas fa-envelope"></i>{{ $prestamo->cliente->email }} <br> <br>
+                        <b>Celular</b> <br>
+                        <i class="fas fa-envelope"></i>{{ $prestamo->cliente->celular }} <br> <br>
+                        <b>Referencia de Celular</b> <br>
+                        <i class="fas fa-envelope"></i>{{ $prestamo->cliente->ref_celular }} <br> <br>
                     </div>
                 </div>
             </div>
