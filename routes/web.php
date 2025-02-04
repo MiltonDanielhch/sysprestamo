@@ -107,22 +107,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/pagos/prestamos/cliente/{id}', [PagoController::class, 'cargarPrestamosCliente'])->name('admin.pagos.CargarPrestamosCliente');
     Route::get('/admin/pagos/prestamos/create/{id}', [PagoController::class, 'create'])->name('admin.pagos.create');
 
-    Route::post('/admin/pagos/create/{id}', [PagoController::class, 'store'])->name('admin.pagos.store');
+    // Route::post('/admin/pagos/create/{pago}', [PagoController::class, 'store'])->name('admin.pagos.store');
+    // Dentro del grupo de middleware auth
+    Route::put('/admin/pagos/{id}', [PagoController::class, 'update'])->name('admin.pagos.update');
+    Route::get('/admin/prestamos/comprobantedepago/{id}', [PagoController::class, 'comprobantedepago'])->name('admin.pagos.comprobantedepago');
+    Route::get('/admin/pagos/{id}', [PagoController::class, 'show'])->name('admin.pagos.show');
+    Route::post('/admin/pagos/{id}', [PagoController::class, 'destroy'])->name('admin.pagos.destroy');
+
 
     Route::get('/admin/pagos/create', [PagoController::class, 'create'])->name('admin.pagos.create');
     Route::get('/admin/pagos/create/{id}', [PagoController::class, 'cargarDatos'])->name('admin.pagos.cargarDatos');
-    Route::post('/admin/pagos', [PagoController::class, 'store'])->name('admin.pagos.store');
-
-    Route::get('/admin/pagos/{id}', [PagoController::class, 'show'])->name('admin.pagos.show');
-    Route::get('/admin/prestamos/contratos/{id}', [PrestamoController::class, 'contratos'])->name('admin.prestamos.contratos');
     Route::get('/admin/pagos/{id}/edit', [PagoController::class, 'edit'])->name('admin.pagos.edit');
-
+    Route::get('/admin/prestamos/contratos/{id}', [PrestamoController::class, 'contratos'])
+    ->name('admin.prestamos.contratos');
     Route::put('/admin/pagos/{id}', [PagoController::class, 'update'])->name('admin.pagos.update');
 
-    Route::delete('/admin/pagos/{id}', [PagoController::class, 'destroy'])->name('admin.pagos.destroy');
 
 
-    Route::get('/admin/pagos/cliente/{id}', [PagoController::class, 'obtenerCliente'])->name('admin.pagos.cliente.obtenerCliente');
+    // Route::post('/admin/pagos', [PagoController::class, 'store'])->name('admin.pagos.store');
+    // Route::get('/admin/pagos/cliente/{id}', [PagoController::class, 'obtenerCliente'])->name('admin.pagos.cliente.obtenerCliente');
 
 });
 

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Pago;
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
+use App\Models\Configuracion;
 use App\Models\Prestamo;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -73,12 +75,28 @@ class PagoController extends Controller
         //     ->with('icono', 'success');
     }
 
+    public function comprobantedepago($id){
+        // $pago = Pago::find($id);
+        $pago = Pago::with('cliente')->findOrFail($id);
+        $prestamo = Prestamo::where('id', $pago->prestamo_id)->first();
+        $cliente = Cliente::where('id', $prestamo->cliente_id)->first();
+        // dd($pago);
+        $configuracion = Configuracion::latest()->first();
+        $pdf = Pdf::loadView('admin.pagos.comprobantedepago', compact('pago', 'configuracion', 'pago', 'prestamo', 'cliente'));
+
+        return $pdf->stream();
+    }
+
     /**
      * Display the specified resource.
      */
-    public function show(Pago $pago)
+    public function show($id)
     {
-        //
+        $pago = Pago::find($id);
+        $prestamo = Prestamo::where('id', $pago->prestamo_id)->first();
+        $cliente = Cliente::where('id', $prestamo->cliente_id)->first();
+
+        return view('admin.pagos.show', compact('pago', 'prestamo', 'cliente'));
     }
 
     /**
@@ -92,26 +110,36 @@ class PagoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        $pago = Pago::find($id);
+        $pago = Pago::findOrFail($id);
 
-        // Actualiza los detalles del pago
-        $pago->estado = "Confirmado"; // Ejemplo de actualización
-        $pago->fecha_cancelado = now(); // Actualiza la fecha de cancelación
+        // Actualizar los campos
+        $pago->estado = "Confirmado";
+        $pago->fecha_cancelado = now(); // Fecha y hora actual
+
         $pago->save();
 
-        // Redirige de vuelta con un mensaje de éxito
-        return redirect()->back()->with('mensaje', 'Pago confirmado')->with('icono', 'success');
+        return redirect()->back()
+            ->with('mensaje', 'Pago confirmado exitosamente')
+            ->with('icono', 'success');
     }
+
 
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pago $pago)
+    public function destroy($id)
     {
-        //
+        $pago = Pago::find($id);
+        $pago->fecha_cancelado = null ;
+        $pago->estado = "Pendiente";
+        $pago->save();
+
+        return redirect()->route('admin.pagos.index')
+        ->with('mensaje', 'Pago cancelado exitosamente')
+        ->with('icono', 'success');
     }
 }

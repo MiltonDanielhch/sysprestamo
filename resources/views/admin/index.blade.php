@@ -38,7 +38,23 @@ $cards = [
         'count' => $total_clientes,
         'label' => 'Clientes',
         'color' => 'bg-warning'
-    ]
+    ],
+    [
+        'url' => '/admin/prestamos',
+        'icon' => 'fa-users',
+        'title' => 'Prestamos Registrados',
+        'count' => $total_prestamos,
+        'label' => 'Prestamos',
+        'color' => 'bg-warning'
+    ],
+    [
+        'url' => '/admin/pagos',
+        'icon' => 'fa-users',
+        'title' => 'Pagos Registrados',
+        'count' => $total_pagos,
+        'label' => 'Pagos',
+        'color' => 'bg-warning'
+    ],
 ];
 @endphp
 

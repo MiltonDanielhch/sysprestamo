@@ -42,15 +42,15 @@
                                 <td>{{ $pago->fecha_pago }}</td>
                                 <td style="text-align: center">
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a href="{{ url('/admin/pagos/contratos',$pago->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></a>
+                                        <a href="{{ url('/admin/pagos',$pago->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
+                                        <a href="{{ url('/admin/prestamos/comprobantedepago',$pago->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></a>
+
                                         @if($pago->tiene_cuota_pagada)
                                             {{-- <small>el prestamo ya tiene cuotas pagadas</small> --}}
                                         @else
-                                            <a href="{{ url('/admin/pagos/'.$pago->id.'/edit') }}" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
                                             <form action="{{ url('/admin/pagos',$pago->id) }}" method="post"
                                                 onclick="preguntar{{ $pago->id }}(event)" id="miFormulario{{ $pago->id }}">
                                                 @csrf
-                                                @method('delete')
                                                 <button type="submit" class="btn btn-danger btn-sm"><i
                                                         class="fas fa-trash"></i></button>
                                             </form>

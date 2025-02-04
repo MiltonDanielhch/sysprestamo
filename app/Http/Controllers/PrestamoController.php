@@ -10,6 +10,7 @@ use App\Models\Pago;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Gate;
 
 class PrestamoController extends Controller
 {
@@ -122,13 +123,27 @@ class PrestamoController extends Controller
         return view('admin.prestamos.show', compact('prestamo', 'pagos'));
     }
 
-    public function contratos($id){
-        $configuracion = Configuracion::latest()->first();
-        $prestamo = Prestamo::find($id);
-        $pagos = Pago::where('prestamo_id', $prestamo->id)->get();
 
-        $pdf = Pdf::loadView('admin.prestamos.contratos', compact('prestamo','pagos', 'configuracion'));
-        return $pdf->stream();
+    public function contratos($id)
+    {
+        // Obtener configuración
+        $configuracion = Configuracion::first();
+
+        // Obtener préstamo con relaciones
+        $prestamo = Prestamo::with('cliente')->findOrFail($id);
+
+        // Autorización
+        // Gate::authorize('view', $prestamo);
+
+        // Obtener pagos ordenados
+        $pagos = Pago::where('prestamo_id', $prestamo->id)
+                    ->orderBy('fecha_pago')
+                    ->get();
+
+        // Generar PDF
+        $pdf = Pdf::loadView('admin.prestamos.contratos', compact('prestamo', 'pagos', 'configuracion'));
+
+        return $pdf->stream('contrato-prestamo-' . $prestamo->id . '.pdf');
     }
     /**
      * Show the form for editing the specified resource.

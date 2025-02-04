@@ -1,120 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contrato</title>
+    <title>Contrato de Préstamo</title>
     <style>
+        body {
+            font-family: 'DejaVu Sans', sans-serif;
+            margin: 10px; /* Reducido */
+            font-size: 9pt; /* Reducido */
+            line-height: 1.2; /* Compactado */
+        }
         .table {
             border-collapse: collapse;
             width: 100%;
+            margin-bottom: 5px; /* Reducido */
+            page-break-inside: avoid;
         }
-
-        .table th,
-        .table td {
+        .table th, .table td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 4px; /* Reducido */
             text-align: left;
         }
-
-        .table tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .table tr:nth-child(even) { background-color: #f9f9f9; }
+        .table th { background-color: #e0e0e0; }
+        .header td { vertical-align: top; }
+        u { text-decoration-thickness: 1px; }
+        hr { margin: 5px 0; } /* Reducido */
+        h1, h3 { margin: 10px 0; font-size: 11pt; } /* Títulos más pequeños */
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 7pt; /* Más pequeño */
         }
-
-        .table th {
-            background-color: #e7e7e7;
-        }
+        img { max-width: 80px; height: auto; } /* Logo más pequeño */
     </style>
 </head>
 <body>
-<table border="0" style="font-size: 9pt">
-    <tr style="text-align: center;">
-        <td>
-            {{ $configuracion->nombre }} <br>
-            {{ $configuracion->descripcion }} <br>
-            {{ $configuracion->direccion }} <br>
-            {{ $configuracion->telefono }} <br>
-            {{ $configuracion->email }} <br>
-        </td>
-        <td width="400px"></td>
-        <td style="text-align: center;"><img src="{{ public_path('storege/'.$configuracion->logo) }}" width="80px" alt=""></td>
-    </tr>
-</table>
-<p style="text-align:center"><b style="font-size: 25pt"><u>Prestamo Nro {{ $prestamo->id }}</u></b></p>
-<br>
-<b>Datos del Cliente: </b>
-<hr>
-<table class="table table-bordered" cellpadding="3">
-    <tr>
-        <td style="background-color: #c0c0c0"><b>Documento:</b></td>
-        <td>{{ $prestamo->cliente->nro_documento }}</td>
-        <td style="background-color: #c0c0c0"><b>Correo Electronico:</b></td>
-        <td>{{ $prestamo->cliente->email }}</td>
-    </tr>
-    <tr>
-        <td style="background-color: #c0c0c0"><b>Cliente:</b></td>
-        <td>{{ $prestamo->cliente->apellidos." ".$prestamo->cliente->nombres }}</td>
-        <td style="background-color: #c0c0c0"><b>Celular:</b></td>
-        <td>{{ $prestamo->cliente->celular }}</td>
-    </tr>
-    <tr>
-        <td style="background-color: #c0c0c0"><b>Fecha de Nacimiento: </b></td>
-        <td>{{ $prestamo->cliente->fecha_nacimiento }}</td>
-        <td style="background-color: #c0c0c0"><b>Ref de Celular: </b></td>
-        <td>{{ $prestamo->cliente->ref_celular }}</td>
-    </tr>
-    <tr>
-        <td style="background-color: #c0c0c0"><b>Género: </b> </td>
-        <td>{{ $prestamo->cliente->genero }}</td>
-    </tr>
-</table>
-<br>
-<b>Detalle del Prestamo</b>
-<hr>
-
-<table class="table table-bordered" cellpadding="3">
-    <tr>
-        <td style="background-color: #c0c0c0"><b>Monto del Prestamo:</b></td>
-        <td>{{ $configuracion->moneda." ". $prestamo->monto_prestado }}</td>
-        <td style="background-color: #c0c0c0"><b>Tasa de Interes:</b></td>
-        <td>{{ $prestamo->tasa_interes }}</td>
-    </tr>
-    <tr>
-        <td style="background-color: #c0c0c0"><b>Modalidad de Pago:</b></td>
-        <td>{{ $prestamo->modalidad }}</td>
-        <td style="background-color: #c0c0c0"><b>Nro de Cuotas:</b></td>
-        <td>{{ $prestamo->nro_cuotas }}</td>
-    </tr>
-    <tr>
-        <td style="background-color: #c0c0c0"><b>Monto Total: </b></td>
-        <td>{{ $configuracion->moneda." ". $prestamo->monto_total }}</td>
-        <td style="background-color: #c0c0c0"><b>Estado: </b></td>
-        <td>{{ $prestamo->estado }}</td>
-    </tr>
-</table>
-<br>
-<b>Detalle del Prestamo</b>
-<hr>
-<table border="0" class="table table-bordered" cellpadding="3">
-    <thead>
-        <tr style="background-color:#c0c0c0">
-            <th>Nro de Cuotas</th>
-            <th>Fecha de Pago</th>
-            <th>Monto</th>
-            <th>Estado</th>
-        </tr>
-    </thead>
     @php
-        $contador=1;
+        use Carbon\Carbon;
     @endphp
-    @foreach($pagos as $pago)
-        <tr>
-            <td>{{$contador++}}</td>
-            <td>{{$pago->fecha_pago}}</td>
-            <td>{{$configuracion->modena." ".$pago->monto_pagado}}</td>
-            <td>{{$pago->estado}}</td>
+
+    <!-- Encabezado -->
+    <table class="table" border="0">
+        <tr class="header">
+            <td style="text-align: center; width: 50%">
+                <strong>{{ $configuracion->nombre }}</strong><br>
+                {{ $configuracion->descripcion }}<br>
+                {{ $configuracion->direccion }}<br>
+                Teléfono: {{ $configuracion->telefono }}<br>
+                Email: {{ $configuracion->email }}
+            </td>
+            <td style="text-align: center; width: 50%">
+                <img src="{{ public_path('storage/'.$configuracion->logo) }}" alt="Logo">
+            </td>
         </tr>
-    @endforeach
-</table>
+    </table>
+
+    <!-- Título principal -->
+    <h1 style="text-align: center; margin: 10px 0">
+        <u>CONTRATO DE PRÉSTAMO N° {{ $prestamo->id }}</u>
+    </h1>
+
+    <!-- Sección Cliente -->
+    <h3>Datos del Cliente</h3>
+    <hr>
+    <table class="table">
+        <tr>
+            <th width="20%">Documento:</th>
+            <td width="30%">{{ $prestamo->cliente->nro_documento }}</td>
+            <th width="20%">Correo Electrónico:</th>
+            <td width="30%">{{ $prestamo->cliente->email }}</td>
+        </tr>
+        <tr>
+            <th>Cliente:</th>
+            <td>{{ $prestamo->cliente->apellidos." ".$prestamo->cliente->nombres }}</td>
+            <th>Celular:</th>
+            <td>{{ $prestamo->cliente->celular }}</td>
+        </tr>
+        <tr>
+            <th>Fecha de Nacimiento:</th>
+            <td>{{ Carbon::parse($prestamo->cliente->fecha_nacimiento)->format('d/m/Y') }}</td>
+            <th>Referencia Celular:</th>
+            <td>{{ $prestamo->cliente->ref_celular }}</td>
+        </tr>
+        <tr>
+            <th>Género:</th>
+            <td>{{ $prestamo->cliente->genero }}</td>
+            <th colspan="2"></th>
+        </tr>
+    </table>
+
+    <!-- Sección Préstamo -->
+    <h3>Detalles del Préstamo</h3>
+    <hr>
+    <table class="table">
+        <tr>
+            <th width="25%">Monto del Préstamo:</th>
+            <td width="25%">{{ $configuracion->moneda }} {{ number_format($prestamo->monto_prestado, 2) }}</td>
+            <th width="25%">Tasa de Interés:</th>
+            <td width="25%">{{ $prestamo->tasa_interes }}%</td>
+        </tr>
+        <tr>
+            <th>Modalidad de Pago:</th>
+            <td>{{ $prestamo->modalidad }}</td>
+            <th>Número de Cuotas:</th>
+            <td>{{ $prestamo->nro_cuotas }}</td>
+        </tr>
+        <tr>
+            <th>Monto Total a Pagar:</th>
+            <td>{{ $configuracion->moneda }} {{ number_format($prestamo->monto_total, 2) }}</td>
+            <th>Estado:</th>
+            <td>{{ ucfirst($prestamo->estado) }}</td>
+        </tr>
+    </table>
+
+    <!-- Sección Pagos -->
+    <h3>Plan de Pagos</h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="10%">Cuota</th>
+                <th width="30%">Fecha de Pago</th>
+                <th width="30%">Monto</th>
+                <th width="30%">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($pagos as $pago)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ Carbon::parse($pago->fecha_pago)->format('d/m/Y') }}</td>
+                <td>{{ $configuracion->moneda }} {{ number_format($pago->monto_pagado, 2) }}</td>
+                <td>{{ ucfirst($pago->estado) }}</td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="4" style="text-align: center">No se registran pagos</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    <!-- Pie de página -->
+    <div class="footer">
+        Documento generado el: {{ Carbon::now()->format('d/m/Y H:i') }}<br>
+        {{ $configuracion->nombre }} - Todos los derechos reservados
+    </div>
 </body>
 </html>
