@@ -10,24 +10,46 @@ use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 
 Route::get('/', function () {
     return redirect('/admin');
 });
 
-Route::get('/home', [AdminController::class, 'home'])->name('home');
+// Route::get('/home', [AdminController::class, 'home'])->name('home');
 
 // Middleware para rutas administrativas
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('home');
+
     // Rutas para configuración del sistema
-    Route::get('/admin/configuracion', [ConfiguracionController::class, 'index'])->name('admin.configuracion.index');
-    Route::get('/admin/configuracion/create', [ConfiguracionController::class, 'create'])->name('admin.configuracion.create');
-    Route::post('/admin/configuracion/create', [ConfiguracionController::class, 'store'])->name('admin.configuracion.store');
-    Route::get('/admin/configuracion/{id}', [ConfiguracionController::class, 'show'])->name('admin.configuracion.show');
-    Route::get('/admin/configuracion/{id}/edit', [ConfiguracionController::class, 'edit'])->name('admin.configuracion.edit');
-    Route::put('/admin/configuracion/{id}', [ConfiguracionController::class, 'update'])->name('admin.configuracion.update');
-    Route::delete('/admin/configuracion/{id}', [ConfiguracionController::class, 'destroy'])->name('admin.configuracion.destroy');
+    Route::get('/admin/configuracion', [ConfiguracionController::class, 'index'])
+        ->name('admin.configuracion.index')
+        ->middleware('can:admin.configuracion.index');
+
+    Route::get('/admin/configuracion/create', [ConfiguracionController::class, 'create'])
+        ->name('admin.configuracion.create')
+        ->middleware('can:admin.configuracion.create');
+
+    Route::post('/admin/configuracion/create', [ConfiguracionController::class, 'store'])
+        ->name('admin.configuracion.store')
+        ->middleware('can:admin.configuracion.store');
+
+    Route::get('/admin/configuracion/{id}', [ConfiguracionController::class, 'show'])
+        ->name('admin.configuracion.show')
+        ->middleware('can:admin.configuracion.show');
+
+    Route::get('/admin/configuracion/{id}/edit', [ConfiguracionController::class, 'edit'])
+        ->name('admin.configuracion.edit')
+        ->middleware('can:admin.configuracion.edit');
+
+    Route::put('/admin/configuracion/{id}', [ConfiguracionController::class, 'update'])
+        ->name('admin.configuracion.update')
+        ->middleware('can:admin.configuracion.update');
+
+    Route::delete('/admin/configuracion/{id}', [ConfiguracionController::class, 'destroy'])
+        ->name('admin.configuracion.destroy')
+        ->middleware('can:admin.configuracion.destroy');
 
     // Rutas para gestión de roles
     Route::resource('admin/roles', RoleController::class)->names([
@@ -38,9 +60,17 @@ Route::middleware('auth')->group(function () {
         'edit' => 'admin.roles.edit',
         'update' => 'admin.roles.update',
         'destroy' => 'admin.roles.destroy'
-    ]);
+    ])->middleware('can:admin.roles.index');
 
-    // Rutas para usuarios (descomentadas cuando se necesiten)
+    Route::get('/admin/roles/{id}/asignar', [RoleController::class, 'asignarPermisos'])
+        ->name('admin.roles.asignarPermisos')
+        ->middleware('can:admin.roles.asignarPermisos');
+
+    Route::put('/admin/roles/asignar/{id}', [RoleController::class, 'updateAsignar'])
+        ->name('admin.roles.updateAsignar')
+        ->middleware('can:admin.roles.updateAsignar');
+
+    // Rutas para usuarios
     Route::resource('admin/usuarios', UsuarioController::class)->names([
         'index' => 'admin.usuarios.index',
         'create' => 'admin.usuarios.create',
@@ -49,9 +79,10 @@ Route::middleware('auth')->group(function () {
         'edit' => 'admin.usuarios.edit',
         'update' => 'admin.usuarios.update',
         'destroy' => 'admin.usuarios.destroy'
-    ]);
-      // Rutas para clientes (descomentadas cuando se necesiten)
-      Route::resource('admin/clientes', ClienteController::class)->names([
+    ])->middleware('can:admin.usuarios.index');
+
+    // Rutas para clientes
+    Route::resource('admin/clientes', ClienteController::class)->names([
         'index' => 'admin.clientes.index',
         'create' => 'admin.clientes.create',
         'store' => 'admin.clientes.store',
@@ -59,8 +90,9 @@ Route::middleware('auth')->group(function () {
         'edit' => 'admin.clientes.edit',
         'update' => 'admin.clientes.update',
         'destroy' => 'admin.clientes.destroy'
-    ]);
-    // Rutas para clientes (descomentadas cuando se necesiten)
+    ])->middleware('can:admin.clientes.index');
+
+    // Rutas para préstamos
     Route::resource('admin/prestamos', PrestamoController::class)->names([
         'index' => 'admin.prestamos.index',
         'create' => 'admin.prestamos.create',
@@ -69,57 +101,56 @@ Route::middleware('auth')->group(function () {
         'edit' => 'admin.prestamos.edit',
         'update' => 'admin.prestamos.update',
         'destroy' => 'admin.prestamos.destroy'
-    ]);
-    Route::get('/admin/prestamos/cliente/{id}', [PrestamoController::class, 'obtenerCliente'])->name('admin.prestamos.cliente.obtenerCliente');
-    Route::get('/admin/prestamos/contratos/{id}', [PrestamoController::class, 'contratos'])->name('admin.prestamos.contratos');
+    ])->middleware('can:admin.prestamos.index');
 
-    // Rutas para clientes (descomentadas cuando se necesiten)
-    // Route::resource('admin/pagos', PagoController::class)->names([
-    //     'index' => 'admin.pagos.index',
-    //     'create' => 'admin.pagos.create',
-    //     // 'store' => 'admin.pagos.store',
-    //     'show' => 'admin.pagos.show',
-    //     'edit' => 'admin.pagos.edit',
-    //     'update' => 'admin.pagos.update',
-    //     'destroy' => 'admin.pagos.destroy'
-    // ]);
+    Route::get('/admin/prestamos/cliente/{id}', [PrestamoController::class, 'obtenerCliente'])
+        ->name('admin.prestamos.cliente.obtenerCliente')
+        ->middleware('can:admin.prestamos.cliente.obtenerCliente');
 
-    // Route::get('/admin/pagos', [PagoController::class, 'index'])->name('admin.pagos.index'); // Para ver todos los pagos
-    // Route::get('/admin/pagos/prestamos/cliente/{id}', [PagoController::class, 'cargarPrestamosCliente'])->name('admin.pagos.CargarPrestamosCliente');
+    Route::get('/admin/prestamos/contratos/{id}', [PrestamoController::class, 'contratos'])
+        ->name('admin.prestamos.contratos')
+        ->middleware('can:admin.prestamos.contratos');
 
-    // // Mostrar formulario para crear un pago (si necesitas un ID específico, como cliente o préstamo)
-    // Route::get('/admin/pagos/create/{id}', [PagoController::class, 'create'])->name('admin.pagos.create');
+    // Rutas para pagos
+    Route::get('/admin/pagos', [PagoController::class, 'index'])
+        ->name('admin.pagos.index')
+        ->middleware('can:admin.pagos.index');
 
-    // // Almacenar un nuevo pago
-    // Route::post('/admin/pagos', [PagoController::class, 'store'])->name('admin.pagos.store');
+    Route::get('/admin/pagos/prestamos/cliente/{id}', [PagoController::class, 'cargarPrestamosCliente'])
+        ->name('admin.pagos.CargarPrestamosCliente')
+        ->middleware('can:admin.pagos.CargarPrestamosCliente');
 
-    // // Mostrar detalles del pago
-    // Route::get('/admin/pagos/{id}', [PagoController::class, 'show'])->name('admin.pagos.show');
+    Route::get('/admin/pagos/prestamos/create/{id}', [PagoController::class, 'create'])
+        ->name('admin.pagos.create')
+        ->middleware('can:admin.pagos.create');
 
-    // // Editar un pago específico (la ruta PUT actualiza)
-    // Route::get('/admin/pagos/{id}/edit', [PagoController::class, 'edit'])->name('admin.pagos.edit');
-    // Route::put('/admin/pagos/{id}', [PagoController::class, 'update'])->name('admin.pagos.update');
+    Route::put('/admin/pagos/{id}', [PagoController::class, 'update'])
+        ->name('admin.pagos.update')
+        ->middleware('can:admin.pagos.update');
 
-    // // Eliminar un pago
-    // Route::delete('/admin/pagos/{id}', [PagoController::class, 'destroy'])->name('admin.pagos.destroy');
+    Route::get('/admin/prestamos/comprobantedepago/{id}', [PagoController::class, 'comprobantedepago'])
+        ->name('admin.pagos.comprobantedepago')
+        ->middleware('can:admin.pagos.comprobantedepago');
 
+    Route::get('/admin/pagos/{id}', [PagoController::class, 'show'])
+        ->name('admin.pagos.show')
+        ->middleware('can:admin.pagos.show');
 
-    Route::get('/admin/pagos', [PagoController::class, 'index'])->name('admin.pagos.index');
-    Route::get('/admin/pagos/prestamos/cliente/{id}', [PagoController::class, 'cargarPrestamosCliente'])->name('admin.pagos.CargarPrestamosCliente');
-    Route::get('/admin/pagos/prestamos/create/{id}', [PagoController::class, 'create'])->name('admin.pagos.create');
+    Route::post('/admin/pagos/{id}', [PagoController::class, 'destroy'])
+        ->name('admin.pagos.destroy')
+        ->middleware('can:admin.pagos.destroy');
 
-    // Route::post('/admin/pagos/create/{pago}', [PagoController::class, 'store'])->name('admin.pagos.store');
-    // Dentro del grupo de middleware auth
-    Route::put('/admin/pagos/{id}', [PagoController::class, 'update'])->name('admin.pagos.update');
-    Route::get('/admin/prestamos/comprobantedepago/{id}', [PagoController::class, 'comprobantedepago'])->name('admin.pagos.comprobantedepago');
-    Route::get('/admin/pagos/{id}', [PagoController::class, 'show'])->name('admin.pagos.show');
-    Route::post('/admin/pagos/{id}', [PagoController::class, 'destroy'])->name('admin.pagos.destroy');
+    // Rutas para notificaciones
+    Route::get('/admin/notificaciones', [NotificacionController::class, 'index'])
+        ->name('admin.notificaciones.index')
+        ->middleware('can:admin.notificaciones.index');
 
-    // Rutas notificaciones
-    Route::get('/admin/notificaciones', [NotificacionController::class, 'index'])->name('admin.notificaciones.index');
-    Route::get('/admin/notificaciones/notificar/{id}', [NotificacionController::class, 'notificar'])->name('admin.notificaciones.notificar');
-
+    Route::get('/admin/notificaciones/notificar/{id}', [NotificacionController::class, 'notificar'])
+        ->name('admin.notificaciones.notificar')
+        ->middleware('can:admin.notificaciones.notificar');
 });
+
+
 
 // Rutas autenticadas con Jetstream y Sanctum
 Route::middleware([

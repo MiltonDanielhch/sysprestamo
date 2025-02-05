@@ -51,6 +51,12 @@
                                            title="Editar rol">
                                             <i class="fas fa-edit"></i>
                                         </a>
+                                        <a href="{{ url('/admin/roles/'.$role->id."/asignar") }}"
+                                            class="btn btn-sm btn-warning"
+                                            data-toggle="tooltip"
+                                            title="Asignar permisos">
+                                            <i class="fas fa-check"></i>
+                                        </a>
 
                                         <form action="{{ route('admin.roles.destroy', $role) }}"
                                               method="POST"

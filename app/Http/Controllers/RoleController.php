@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Controllers\Traits\ApiResponses;
+use Spatie\Permission\Models\Permission;
+
 class RoleController extends Controller
 {
     use AuthorizesRequests;
@@ -60,6 +62,41 @@ class RoleController extends Controller
         return view('admin.roles.show', compact('role'));
     }
 
+    public function asignarPermisos($id){
+        $rol = Role::find($id);
+        $permisos = Permission::all()->groupBy(function($permiso){
+            if (stripos($permiso->name, 'config') !== false) {
+                return 'Configuracion';
+            } elseif (stripos($permiso->name, 'rol') !== false) {
+                return 'Roles';
+            } elseif (stripos($permiso->name, 'usu') !== false) {
+                return 'Usuarios';
+            } elseif (stripos($permiso->name, 'cliente') !== false) {
+                return 'Clientes';
+            } elseif (stripos($permiso->name, 'presta') !== false) {
+                return 'Prestamos';
+            } elseif (stripos($permiso->name, 'pago') !== false) {
+                return 'Pagos';
+            } elseif (stripos($permiso->name, 'notifi') !== false) {
+                return 'Notificaciones';
+            } else {
+                return 'other';
+            }
+        });
+
+        return view('admin.roles.asignar', compact('rol', 'permisos'));
+    }
+
+    public function updateAsignar(Request $request, $id){
+        $rol = Role::find($id);
+        $rol->permissions()->sync($request->input('permisos'));
+
+        return redirect()->route('admin.roles.index')
+        ->with( [
+            'icono' => 'success',
+            'mensaje' => 'Se ha actualizado los Permisos de el rol exitosamente'
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      */
