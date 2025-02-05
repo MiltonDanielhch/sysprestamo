@@ -40,6 +40,10 @@
     </style>
 </head>
 <body>
+@php
+    use Carbon\Carbon;
+    $fecha = Carbon::parse($pago->fecha_cancelado);
+@endphp
 <!-- Encabezado -->
 <table class="table" border="0">
     <tr class="header">
@@ -65,7 +69,7 @@
 
 <table class="table" cellpadding="5">
     <tr>
-        <td><b>Fecha: </b>{{ $pago->fecha_cancelado->translatedFormat('d \d\e F \d\e Y') }}</td>
+        <td><b>Fecha: </b>{{ $fecha->translatedFormat('d \d\e F \d\e Y') }}</td>
         <td><b>Nro de Documento: </b>{{ $cliente->nro_documento }}</td>
     </tr>
     <tr>
@@ -130,7 +134,7 @@
 
 <table class="table" cellpadding="5">
     <tr>
-        <td><b>Fecha: </b>{{ $pago->fecha_cancelado->translatedFormat('d \d\e F \d\e Y') }}</td>
+        <td><b>Fecha: </b>{{ $fecha->translatedFormat('d \d\e F \d\e Y') }}</td>
         <td><b>Nro de Documento: </b>{{ $cliente->nro_documento }}</td>
     </tr>
     <tr>

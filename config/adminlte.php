@@ -363,6 +363,18 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Notificaciones',
+            'icon' => 'fas fa-fw fa-envelope',
+            'classes' => 'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de Notificaciones',
+                    'url' => 'admin/notificaciones',
+                    'classes' => 'bg-white text-back',
+                ],
+            ],
+        ],
     ],
 
     /*

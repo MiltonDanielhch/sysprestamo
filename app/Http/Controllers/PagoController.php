@@ -124,10 +124,6 @@ class PagoController extends Controller
             ->with('mensaje', 'Pago confirmado exitosamente')
             ->with('icono', 'success');
     }
-
-
-
-
     /**
      * Remove the specified resource from storage.
      */

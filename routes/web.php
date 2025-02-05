@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\RoleController;
@@ -114,18 +115,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/pagos/{id}', [PagoController::class, 'show'])->name('admin.pagos.show');
     Route::post('/admin/pagos/{id}', [PagoController::class, 'destroy'])->name('admin.pagos.destroy');
 
-
-    Route::get('/admin/pagos/create', [PagoController::class, 'create'])->name('admin.pagos.create');
-    Route::get('/admin/pagos/create/{id}', [PagoController::class, 'cargarDatos'])->name('admin.pagos.cargarDatos');
-    Route::get('/admin/pagos/{id}/edit', [PagoController::class, 'edit'])->name('admin.pagos.edit');
-    Route::get('/admin/prestamos/contratos/{id}', [PrestamoController::class, 'contratos'])
-    ->name('admin.prestamos.contratos');
-    Route::put('/admin/pagos/{id}', [PagoController::class, 'update'])->name('admin.pagos.update');
-
-
-
-    // Route::post('/admin/pagos', [PagoController::class, 'store'])->name('admin.pagos.store');
-    // Route::get('/admin/pagos/cliente/{id}', [PagoController::class, 'obtenerCliente'])->name('admin.pagos.cliente.obtenerCliente');
+    // Rutas notificaciones
+    Route::get('/admin/notificaciones', [NotificacionController::class, 'index'])->name('admin.notificaciones.index');
+    Route::get('/admin/notificaciones/notificar/{id}', [NotificacionController::class, 'notificar'])->name('admin.notificaciones.notificar');
 
 });
 

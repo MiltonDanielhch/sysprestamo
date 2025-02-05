@@ -23,7 +23,7 @@
                             <th scope="col">Cliente</th>
                             <th scope="col">Cuota Pagada</th>
                             <th scope="col">Nro de Cuotas</th>
-                            <th scope="col">Fecha de Pago</th>
+                            <th scope="col">Fecha Cancelado</th>
                             <th scope="col" style="text-align: center">Acciones</th>
                         </tr>
                     </thead>
@@ -39,7 +39,7 @@
                                 <td>{{ $pago->prestamo->cliente->apellidos. " ".$pago->prestamo->cliente->nombres }}</td>
                                 <td>{{ $pago->monto_pagado }}</td>
                                 <td>{{ $pago->referencia_pago }}</td>
-                                <td>{{ $pago->fecha_pago }}</td>
+                                <td>{{ $pago->fecha_cancelado }}</td>
                                 <td style="text-align: center">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="{{ url('/admin/pagos',$pago->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
