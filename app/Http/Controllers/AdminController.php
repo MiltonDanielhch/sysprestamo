@@ -21,6 +21,8 @@ class AdminController extends Controller
             'total_clientes' => Cliente::count(),
             'total_prestamos' => Prestamo::count(),
             'total_pagos' => Pago::where('estado', 'Confirmado')->count(),
+            'prestamos' => Prestamo::all(),
+            'pagos' => Pago::where('estado', 'Confirmado')->get(),
         ]);
     }
 }

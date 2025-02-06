@@ -145,11 +145,15 @@ Route::middleware('auth')->group(function () {
         ->name('admin.notificaciones.index')
         ->middleware('can:admin.notificaciones.index');
 
-    Route::get('/admin/notificaciones/notificar/{id}', [NotificacionController::class, 'notificar'])
-        ->name('admin.notificaciones.notificar')
-        ->middleware('can:admin.notificaciones.notificar');
-});
+    });
 
+    Route::get('/admin/notificaciones/notificar/{id}', [NotificacionController::class, 'notificar'])
+    ->name('admin.notificaciones.notificar')
+    ->middleware('can:admin.notificaciones.notificar');
+
+    Route::get('/admin/backup', [NotificacionController::class, 'index'])
+        ->name('admin.notificaciones.index')
+        ->middleware('can:admin.notificaciones.index');
 
 
 // Rutas autenticadas con Jetstream y Sanctum
