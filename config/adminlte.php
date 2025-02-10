@@ -375,6 +375,18 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Backups',
+            'icon' => 'fas fa-fw fa-database',
+            'classes' => 'bg-blue text-white',
+            'submenu' => [
+                [
+                    'text' => 'Listado de backups',
+                    'url' => 'admin/backups',
+                    'classes' => 'bg-white text-back',
+                ],
+            ],
+        ],
     ],
 
     /*

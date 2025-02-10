@@ -43,7 +43,13 @@
                             <td>{{ $prestamo->modalidad }}</td>
                             <td>{{ $prestamo->nro_cuotas }}</td>
                             <td>{{ $prestamo->fecha_inicio }}</td>
-                            <td>{{ $prestamo->estado }}</td>
+                            <td>
+                                @if ($prestamo->estado == 'Pendiente')
+                                    <span class="badge badge-danger">{{ $prestamo->estado }}</span>
+                                @else
+                                    <span class="badge badge-success">{{ $prestamo->estado }}</span>
+                                @endif
+                            </td>
                             <td style="text-align: center">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a href="{{ url('/admin/pagos/prestamos/create',$prestamo->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-money-bill-wave"></i>Ver Pagos</a>

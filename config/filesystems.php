@@ -32,7 +32,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
+            'root' => storage_path('app'),
             'serve' => true,
             'throw' => false,
         ],
@@ -44,7 +44,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-
+        'backups' => [
+            'driver' => 'local',
+            'root' => storage_path('app/laravel-backup'),
+            'url' => env('APP_URL').'/backups',  // ← Nueva línea
+            'visibility' => 'public',  // ← Cambiar visibilidad
+            'throw' => false,
+        ],
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -72,6 +78,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        // public_path('backups') => storage_path('app/backups'),
     ],
 
 ];

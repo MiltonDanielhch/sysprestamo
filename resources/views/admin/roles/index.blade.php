@@ -57,11 +57,11 @@
                                             title="Asignar permisos">
                                             <i class="fas fa-check"></i>
                                         </a>
-
-                                        <form action="{{ route('admin.roles.destroy', $role) }}"
-                                              method="POST"
-                                              class="d-inline"
-                                              data-delete-form>
+                                        @if (!($role->name == 'Administrador'))
+                                            <form action="{{ route('admin.roles.destroy', $role) }}"
+                                                method="POST"
+                                                class="d-inline"
+                                                data-delete-form>
                                             @csrf
                                             @method('DELETE')
                                             <button type="button"
@@ -71,7 +71,8 @@
                                                     onclick="confirmDelete(event, '{{ $role->name }}')">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
-                                        </form>
+                                            </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

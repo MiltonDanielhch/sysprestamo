@@ -120,9 +120,23 @@ class PagoController extends Controller
 
         $pago->save();
 
-        return redirect()->back()
-            ->with('mensaje', 'Pago confirmado exitosamente')
-            ->with('icono', 'success');
+        $total_cuotas_faltantes = Pago::where('prestamo_id', $pago->prestamo->id)
+        ->where('estado', 'Pendiente')
+        ->count();
+
+        if ($total_cuotas_faltantes == 0) {
+            // echo "Todas las cuotas han sido pagadas.";
+            $prestamo = Prestamo::find($pago->prestamo_id);
+            $prestamo->estado = 'Cancelado';
+            $prestamo->save();
+        }
+        else {
+            echo "Todavía hay cuotas pendientes.";
+        }
+
+        // return redirect()->back()
+        //     ->with('mensaje', 'Pago confirmado exitosamente')
+        //     ->with('icono', 'success');
     }
     /**
      * Remove the specified resource from storage.

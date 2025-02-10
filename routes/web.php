@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\NotificacionController;
@@ -9,7 +10,9 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 Route::get('/', function () {
@@ -140,20 +143,37 @@ Route::middleware('auth')->group(function () {
         ->name('admin.pagos.destroy')
         ->middleware('can:admin.pagos.destroy');
 
+
     // Rutas para notificaciones
     Route::get('/admin/notificaciones', [NotificacionController::class, 'index'])
-        ->name('admin.notificaciones.index')
-        ->middleware('can:admin.notificaciones.index');
-
-    });
+    ->name('admin.notificaciones.index')
+    ->middleware('can:admin.notificaciones.index');
 
     Route::get('/admin/notificaciones/notificar/{id}', [NotificacionController::class, 'notificar'])
     ->name('admin.notificaciones.notificar')
     ->middleware('can:admin.notificaciones.notificar');
+    });
 
-    Route::get('/admin/backup', [NotificacionController::class, 'index'])
-        ->name('admin.notificaciones.index')
-        ->middleware('can:admin.notificaciones.index');
+    // Route::get('/admin/backups', [BackupController::class, 'index'])
+    //     ->name('admin.backups.index');
+
+    // Route::get('/admin/backups/create', [BackupController::class, 'create'])
+    //     ->name('admin.backups.create');
+
+    // Route::get('/admin/backups/download/{file_name}', [BackupController::class, 'download'])
+    //     ->name('backup.download');
+
+    // Route::delete('/admin/backups/delete/{file_name}', [BackupController::class, 'delete'])
+    //     ->name('backup.delete');
+
+    // Route::prefix('/admin/backups')->group(function () {
+    //     Route::get('/', [BackupController::class, 'index'])->name('admin.backups.index');
+    //     Route::get('/create', [BackupController::class, 'create'])->name('admin.backups.create');
+    // });
+    Route::prefix('admin/backups')->group(function () {
+        Route::get('/', [BackupController::class, 'index'])->name('admin.backups.index');
+        Route::post('/create', [BackupController::class, 'create'])->name('admin.backups.create');
+    });
 
 
 // Rutas autenticadas con Jetstream y Sanctum

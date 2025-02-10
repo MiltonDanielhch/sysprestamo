@@ -79,5 +79,9 @@ class RoleSeeder extends Seeder
         //rutas para notificaciones
         Permission::create(['name' => 'admin.notificaciones.index', 'guard_name' => 'web'])->syncRoles([$administrador]);
         Permission::create(['name' => 'admin.notificaciones.notificar', 'guard_name' => 'web'])->syncRoles([$administrador]);
+
+        //rutas para backups
+        Permission::create(['name' => 'admin.backups.index', 'guard_name' => 'web'])->syncRoles([$administrador]);
+        Permission::create(['name' => 'admin.backups.create', 'guard_name' => 'web'])->syncRoles([$administrador]);
     }
 }

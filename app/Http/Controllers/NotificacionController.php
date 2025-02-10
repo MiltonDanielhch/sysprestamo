@@ -21,16 +21,21 @@ class NotificacionController extends Controller
         return view('admin.notificaciones.index', compact('pagos', 'configuracion'));
     }
 
-    public function notificar($id){
-        $pago = Pago::findOrFail($id);
-        // dd($pago);
-        // Mail::to($pago->prestamo->cliente->email)->send(new NotificarPago($pago));
-        Mail::to($pago->prestamo->cliente->email)->send(new NotificarPago($pago->first()));
-        return redirect()->back()
-            ->with('mensaje','se envio')
-            ->with('icono', 'success');
+    public function notificar($id) {
+        $pago = Pago::findOrFail($id); // Busca el pago por ID, o lanza un error si no se encuentra
 
+        // Muestra los datos del pago (solo para depuración)
+        // dd($pago);
+
+        // Enviar el correo utilizando el objeto completo `$pago`
+        Mail::to($pago->prestamo->cliente->email)->send(new NotificarPago($pago));
+
+        // Redirige hacia la página anterior con un mensaje de éxito
+        return redirect()->back()
+            ->with('mensaje', 'Se envió el correo de notificación')
+            ->with('icono', 'success');
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -62,11 +62,11 @@
                                            title="Editar usuario">
                                             <i class="fas fa-edit"></i>
                                         </a>
-
+                                        @if (!($usuario->roles->pluck('name')->implode(', ') === 'Administrador'))
                                         <form action="{{ route('admin.usuarios.destroy', $usuario) }}"
-                                              method="POST"
-                                              class="d-inline"
-                                              data-delete-form>
+                                                method="POST"
+                                                class="d-inline"
+                                                data-delete-form>
                                             @csrf
                                             @method('DELETE')
                                             <button type="button"
@@ -77,6 +77,8 @@
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
+                                        @endif
+
                                     </div>
                                 </td>
                             </tr>

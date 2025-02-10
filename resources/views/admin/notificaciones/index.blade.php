@@ -55,9 +55,19 @@
                                 <td style="text-align: center">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="https://wa.me/{{ $pago->prestamo->cliente->celular }}?text=Hola Cliente,
-                                            {{ $pago->prestamo->cliente->apellidos. " ".$pago->prestamo->cliente->nombres }}, usted tiene una cuota atrasada, por favor realize el pago lo mas antes posible. Atte: {{ $configuracion->nombre }}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-phone"></i>Celular</a>
-                                        <a href="{{ url('/admin/notificaciones/notificar', $pago->id) }}" class="btn btn-info btn-sm"><i class="fas fa-envelope"></i>Correo</a>
+                                            {{ $pago->prestamo->cliente->apellidos. ' '.$pago->prestamo->cliente->nombres }}, usted tiene una cuota atrasada, por favor realice el pago lo más antes posible.
+                                            @if ($configuracion)
+                                                Atte: {{ $configuracion->nombre }}
+                                            @else
+                                                Atte: Nombre no disponible
+                                            @endif" target="_blank" class="btn btn-success btn-sm">
+                                            <i class="fas fa-phone"></i>Celular
+                                        </a>
+                                        <a href="{{ url('/admin/notificaciones/notificar', $pago->id) }}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-envelope"></i>Correo
+                                        </a>
                                     </div>
+
                                 </td>
                             </tr>
                             {{-- @endif --}}
