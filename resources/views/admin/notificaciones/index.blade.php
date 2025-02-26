@@ -10,8 +10,50 @@
     <div class="col-md-12">
         <div class="card card-outline card-primary">
             <div class="card-header">
-                <h3 class="card-title">Registrados Pagos</h3>
+                {{-- <h3 class="card-title">Registrados Pagos</h3>
+                <!-- resources/views/print.blade.php -->
+                <button onclick="triggerFlutterTest()">Probar desde JavaScript</button>
 
+                <script>
+                function triggerFlutterTest() {
+                    if (typeof flutterTestConnection === 'function') {
+                        // Parámetros opcionales
+                        flutterTestConnection(' 172.22.48.1', 9100);
+
+                        // O sin parámetros
+                        // flutterTestConnection();
+                    } else {
+                        console.error('Flutter no está cargado');
+                    }
+                }
+                </script> --}}
+
+                <div id="flutter-container">
+                    <!-- Punto de montaje de Flutter -->
+                    <script src="flutter.js" defer></script>
+                </div>
+
+                  <button onclick="checkFlutterLoaded()">Probar Conexión</button>
+
+                  <script>
+                    let isFlutterReady = false;
+
+                    // Verificar carga de Flutter
+                    function checkFlutterLoaded() {
+                        if (isFlutterReady) {
+                        triggerTest();
+                        } else {
+                        console.error('Esperando carga de Flutter...');
+                        setTimeout(checkFlutterLoaded, 500); // Reintentar cada 500ms
+                        }
+                    }
+
+                    // Escuchar evento de carga
+                    window.addEventListener('flutter-initialized', () => {
+                        isFlutterReady = true;
+                        console.log('Flutter está listo!');
+                    });
+                  </script>
             </div>
 
             <div class="card-body">
