@@ -1,15 +1,30 @@
-# Etapa 1: Construcción (Node.js para compilar assets)
-FROM node:18 AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+# Usamos una imagen base de PHP + FPM
+FROM php:8.2-fpm
 
-# Etapa 2: Ejecución (PHP y Apache para servir la aplicación)
-FROM webdevops/php-apache:8.2-alpine
-WORKDIR /app
-COPY --from=build /app /app
-RUN chown -R www-data:www-data /app
-ENV APACHE_DOCUMENT_ROOT=/app/public
-RUN sed -i 's|/var/www/html|${APACHE_DOCUMENT_ROOT}|g' /etc/apache2/httpd.conf
+# Instalamos dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Copiamos todo el código al contenedor
+COPY . /var/www/html
+
+# Instalar Composer globalmente
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Instalar dependencias de Laravel (sin dev)
+RUN composer install --optimize-autoloader --no-dev
+
+# Dar permisos a la carpeta storage
+RUN chown -R www-data:www-data /var/www/html/storage
+RUN chmod -R 775 /var/www/html/storage
+
+# Puerto y comando de inicio
+EXPOSE 8000
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
