@@ -1,7 +1,7 @@
-# Imagen base de PHP + FPM
+# Imagen base PHP 8.2 FPM
 FROM php:8.2-fpm
 
-# 1. Instalar dependencias del sistema (incluyendo ZIP)
+# 1. Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -11,24 +11,35 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     unzip \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip  # Añade "zip"
+    netcat-openbsd \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# 2. Copiar código y corregir permisos
-COPY . /var/www/html
+# 2. Configurar usuario y directorio de trabajo
+RUN groupadd -g 1000 www && \
+    useradd -u 1000 -ms /bin/bash -g www www && \
+    mkdir -p /var/www/html && \
+    chown www:www /var/www/html
 
-# 3. Solucionar error de permisos de Git
-RUN chown -R www-data:www-data /var/www/html \
-    && git config --global --add safe.directory /var/www/html
+WORKDIR /var/www/html
+
+# 3. Copiar código de la aplicación
+COPY --chown=www:www . .
 
 # 4. Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 5. Instalar dependencias (ignorar requisitos de plataforma temporalmente)
-RUN composer install --optimize-autoloader --no-dev --ignore-platform-reqs
+# 5. Instalar dependencias de producción
+RUN composer install --optimize-autoloader --no-dev --no-interaction
 
-# 6. Permisos de storage
-RUN chmod -R 775 /var/www/html/storage
+# 6. Configurar permisos
+RUN chmod -R 775 storage bootstrap/cache
 
-# 7. Puerto y comando de inicio
+# 7. Copiar script de entrada
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# 8. Puerto de la aplicación
 EXPOSE 8000
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+
+# 9. Comando de inicio
+ENTRYPOINT ["docker-entrypoint.sh"]
